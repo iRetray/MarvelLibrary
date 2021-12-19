@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "MarvelLibrary",
+    "name": "Marvel Library",
     "slug": "MarvelLibrary",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -13,21 +13,19 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.retray.marvellibrary"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/icon.png"
     }
   }
 }

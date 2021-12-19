@@ -1,38 +1,35 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
+
 import { ScrollView, View, Image, StyleSheet, Dimensions } from "react-native";
 import { Avatar, Text, Center, HStack } from "native-base";
-
 import Carousel from "react-native-snap-carousel";
 
 import MarvelService from "../services/MarvelService";
 
-import { ErrorComponent } from "../components";
-
 const { width } = Dimensions.get("window");
 
+const CarouselItem = React.memo(({ thumbnail, title }) => {
+  return (
+    <View>
+      <Image
+        resizeMode="center"
+        style={styles.imageComic}
+        source={{
+          uri: thumbnail.path + "." + thumbnail.extension,
+        }}
+      />
+      <Center>
+        <Text style={styles.titleComic} fontSize="lg">
+          {title}
+        </Text>
+      </Center>
+    </View>
+  );
+});
+
 export const Home = () => {
-  const carrouselRef = useRef(null);
   const [comicsList, setComicsList] = useState(null);
   const [charactersList, setCharactersList] = useState(null);
-
-  const renderItem = ({ comic }) => {
-    return (
-      <View>
-        <Image
-          resizeMode="center"
-          style={styles.imageComic}
-          source={{
-            uri: comic.thumbnail.path + "." + comic.thumbnail.extension,
-          }}
-        />
-        <Center>
-          <Text style={styles.titleComic} fontSize="lg">
-            {comic.title}
-          </Text>
-        </Center>
-      </View>
-    );
-  };
 
   useEffect(() => {
     getRandomComics();
@@ -70,11 +67,14 @@ export const Home = () => {
       {comicsList && (
         <Carousel
           layout="default"
-          ref={carrouselRef}
+          initialNumToRender={1}
           data={comicsList}
-          renderItem={renderItem}
+          renderItem={({ item }) => (
+            <CarouselItem thumbnail={item.thumbnail} title={item.title} />
+          )}
           sliderWidth={width}
           itemWidth={width - 150}
+          removeClippedSubviews={true}
         />
       )}
       {charactersList && (
