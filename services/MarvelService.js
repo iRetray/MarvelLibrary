@@ -43,6 +43,12 @@ class MarvelService {
       buildRequestURL(`/characters?limit=30&orderBy=modified`)
     );
   }
+
+  getRandomSeries() {
+    return HttpService.get(
+      buildRequestURL(`/series?limit=10&orderBy=modified`)
+    );
+  }
 }
 
 export default new MarvelService();

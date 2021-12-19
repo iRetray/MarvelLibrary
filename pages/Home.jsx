@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { ScrollView, View, Image, StyleSheet, Dimensions } from "react-native";
-import { Avatar, Text, Center, HStack } from "native-base";
+import { Avatar, Text, Center, HStack, Heading, Divider } from "native-base";
 import Carousel from "react-native-snap-carousel";
 
 import MarvelService from "../services/MarvelService";
@@ -19,7 +19,7 @@ const CarouselItem = React.memo(({ thumbnail, title }) => {
         }}
       />
       <Center>
-        <Text style={styles.titleComic} fontSize="lg">
+        <Text style={styles.titleComic} fontSize="md">
           {title}
         </Text>
       </Center>
@@ -30,10 +30,12 @@ const CarouselItem = React.memo(({ thumbnail, title }) => {
 export const Home = () => {
   const [comicsList, setComicsList] = useState(null);
   const [charactersList, setCharactersList] = useState(null);
+  const [seriesList, setSeriesList] = useState(null);
 
   useEffect(() => {
     getRandomComics();
     getRandomCharacters();
+    getRandomSeries();
   }, []);
 
   const getRandomComics = () => {
@@ -62,21 +64,21 @@ export const Home = () => {
     }
   };
 
+  const getRandomSeries = () => {
+    if (!seriesList) {
+      MarvelService.getRandomSeries()
+        .then((responseSeries) => {
+          console.log(responseSeries);
+          setSeriesList(responseSeries);
+        })
+        .catch((error) => {
+          console.error({ error });
+        });
+    }
+  };
+
   return (
     <View style={styles.container}>
-      {comicsList && (
-        <Carousel
-          layout="default"
-          initialNumToRender={1}
-          data={comicsList}
-          renderItem={({ item }) => (
-            <CarouselItem thumbnail={item.thumbnail} title={item.title} />
-          )}
-          sliderWidth={width}
-          itemWidth={width - 150}
-          removeClippedSubviews={true}
-        />
-      )}
       {charactersList && (
         <HStack
           space={3}
@@ -111,6 +113,38 @@ export const Home = () => {
           </ScrollView>
         </HStack>
       )}
+      <Divider my="5" bgColor="#bfbfbf" />
+      <Heading style={styles.headers}>Series</Heading>
+      {seriesList && (
+        <Carousel
+          style={{ marginTop: 15 }}
+          layout="default"
+          initialNumToRender={1}
+          data={seriesList}
+          renderItem={({ item }) => (
+            <CarouselItem thumbnail={item.thumbnail} title={item.title} />
+          )}
+          sliderWidth={width}
+          itemWidth={width - 200}
+          removeClippedSubviews={true}
+        />
+      )}
+      <Divider my="5" bgColor="#bfbfbf" />
+      <Heading style={styles.headers}>Comics</Heading>
+      {comicsList && (
+        <Carousel
+          style={{ marginTop: 15 }}
+          layout="default"
+          initialNumToRender={1}
+          data={comicsList}
+          renderItem={({ item }) => (
+            <CarouselItem thumbnail={item.thumbnail} title={item.title} />
+          )}
+          sliderWidth={width}
+          itemWidth={width - 200}
+          removeClippedSubviews={true}
+        />
+      )}
     </View>
   );
 };
@@ -125,7 +159,6 @@ const styles = StyleSheet.create({
   },
   titleComic: {
     marginTop: 10,
-    fontWeight: "bold",
     textAlign: "center",
     lineHeight: 20,
     color: "#ffffff",
@@ -138,5 +171,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     color: "#ffffff",
+  },
+  imageSerie: {
+    width: "100%",
+    height: 200,
+  },
+  headers: {
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#ffffff",
+    padding: 10,
   },
 });
