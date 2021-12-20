@@ -119,7 +119,7 @@ export const Home = () => {
         <Carousel
           style={{ marginTop: 15 }}
           layout="default"
-          initialNumToRender={1}
+          initialNumToRender={3}
           data={seriesList}
           renderItem={({ item }) => (
             <CarouselItem thumbnail={item.thumbnail} title={item.title} />
@@ -135,7 +135,7 @@ export const Home = () => {
         <Carousel
           style={{ marginTop: 15 }}
           layout="default"
-          initialNumToRender={1}
+          initialNumToRender={3}
           data={comicsList}
           renderItem={({ item }) => (
             <CarouselItem thumbnail={item.thumbnail} title={item.title} />
